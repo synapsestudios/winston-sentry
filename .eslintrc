@@ -5,7 +5,12 @@
     "mockResource": true
   },
 
+  plugins: [
+    "jest"
+  ],
+
   env: {
+    jest/globals: true,
     commonjs: true,
     es6: true,
     node: true

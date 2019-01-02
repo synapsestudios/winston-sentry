@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "lint": "eslint .",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "jest"
   },
   "repository": {
     "type": "git",
@@ -24,6 +24,9 @@
     "winston": "2.x"
   },
   "devDependencies": {
-    "eslint": "^5.11.1"
+    "eslint": "^5.11.1",
+    "eslint-plugin-jest": "^22.1.2",
+    "jest": "^23.6.0",
+    "winston": "^2.4.4"
   }
 }
