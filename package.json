@@ -15,5 +15,8 @@
   "bugs": {
     "url": "https://github.com/synapsestudios/winston-sentry/issues"
   },
-  "homepage": "https://github.com/synapsestudios/winston-sentry#readme"
+  "homepage": "https://github.com/synapsestudios/winston-sentry#readme",
+  "dependencies": {
+    "lodash": "^4.17.11"
+  }
 }
