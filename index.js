@@ -15,16 +15,13 @@ const normalizeMessage = (msg, meta) => {
   return message;
 }
 
-const shouldCaptureException = level => {
-  return level === 'error' || level === 'fatal';
-}
-
 module.exports = class SentryTransport extends Winston.Transport{
   constructor(options) {
     options = options || {};
     options = _.defaultsDeep(options, {
+      name: 'SentryTransport',
       silent: false,
-      level: 'warn',
+      level: 'error',
       levelsMap: {
         silly: 'debug',
         verbose: 'debug',
@@ -52,13 +49,11 @@ module.exports = class SentryTransport extends Winston.Transport{
     const message = normalizeMessage(msg, meta);
     const context = _.isObject(meta) ? meta : {};
 
-    if (shouldCaptureException(level)) {
-      this._sentry.withScope(scope => {
-        scope.setLevel(this._levelsMap[level]);
-        scope.setExtra('context', context);
-        this._sentry.captureMessage(message);
-        next(null, true);
-      });
-    }
+    this._sentry.withScope(scope => {
+      scope.setLevel(this._levelsMap[level]);
+      scope.setExtra('context', context);
+      this._sentry.captureMessage(message);
+      next(null, true);
+    });
   }
 }
