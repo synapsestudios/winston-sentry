@@ -18,5 +18,8 @@
   "homepage": "https://github.com/synapsestudios/winston-sentry#readme",
   "dependencies": {
     "lodash": "^4.17.11"
+  },
+  "peerDependencies": {
+    "winston": "2.x"
   }
 }
