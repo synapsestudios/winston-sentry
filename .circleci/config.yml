@@ -14,12 +14,19 @@ jobs:
       - run:
           name: Install Dependencies
           command: npm install
+          when: always
       - run:
           name: Run Linter
-          command: npm run lint
+          command: npm run lint -- --format junit -o reports/junit/eslint/js-lint-results.xml
+          working_directory: api
       - run:
           name: Run Tests
           command: npm test
+          when: always
+      - store_test_results:
+          path: reports/junit
+      - store_artifacts:
+          path: reports/junit
       - save_cache:
           key: dependency-cache-{{ checksum "package.json" }}
           paths:
