@@ -1,4 +1,6 @@
 # winston-sentry
+[![CircleCI](https://circleci.com/gh/synapsestudios/winston-sentry.svg?style=svg)](https://circleci.com/gh/synapsestudios/winston-sentry)
+
 A simple winston transport that logs your errors to sentry.
 
 This transport is for winston 2.x and uses the new `@sentry/node` SDK instead of Raven.
