@@ -34,16 +34,3 @@ test('log calls sentry functions', () => {
   expect(Sentry.mockScope.setExtra).toHaveBeenCalledWith('context', {});
   expect(Sentry.captureMessage).toHaveBeenCalledWith('message');
 });
-
-test('log does not call sentry functions when not error', () => {
-  const Sentry = getMockSentry();
-  const Transport = new SentryTransport({ Sentry });
-
-  const cb = jest.fn();
-  Transport.log('info', 'message', null, cb);
-
-  expect(cb).not.toHaveBeenCalled();
-  expect(Sentry.mockScope.setLevel).not.toHaveBeenCalled()
-  expect(Sentry.mockScope.setExtra).not.toHaveBeenCalled();
-  expect(Sentry.captureMessage).not.toHaveBeenCalled();
-})
