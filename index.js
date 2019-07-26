@@ -1,21 +1,7 @@
 const _ = require('lodash');
 const Winston = require('winston');
 
-const normalizeMessage = (msg, meta) => {
-  let message = msg;
-
-  if (_.isError(msg)) {
-    message = msg.message;
-  }
-
-  if (_.isError(meta) && !_.isString(message)) {
-      message = meta.message;
-  }
-
-  return message;
-}
-
-module.exports = class SentryTransport extends Winston.Transport{
+export default class SentryTransport extends Winston.Transport {
   constructor(options) {
     options = options || {};
     options = _.defaultsDeep(options, {
@@ -46,13 +32,16 @@ module.exports = class SentryTransport extends Winston.Transport{
     if (this.silent) return next(null, true);
     if (!(level in this._levelsMap)) return next(null, true);
 
-    const message = normalizeMessage(msg, meta);
-    const context = _.isObject(meta) ? meta : {};
-
+    if (_.isError(meta)) {
+      this._sentry.captureException(meta);
+      return next(null, true);
+    }
     this._sentry.withScope(scope => {
+      const context = _.isObject(meta) ? meta : {};
       scope.setLevel(this._levelsMap[level]);
       scope.setExtra('context', context);
-      this._sentry.captureMessage(message);
+      this._sentry.captureMessage(msg);
+
       next(null, true);
     });
   }
