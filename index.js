@@ -1,7 +1,7 @@
 const _ = require('lodash');
 const Winston = require('winston');
 
-export default class SentryTransport extends Winston.Transport {
+module.exports = class SentryTransport extends Winston.Transport {
   constructor(options) {
     options = options || {};
     options = _.defaultsDeep(options, {
