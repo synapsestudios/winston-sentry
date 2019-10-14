@@ -34,3 +34,17 @@ test('log calls sentry functions', () => {
   expect(Sentry.mockScope.setExtra).toHaveBeenCalledWith('context', {});
   expect(Sentry.captureMessage).toHaveBeenCalledWith('message');
 });
+
+test('message is formatted when custom formatter has been provided', () => {
+  const messageDecoration = '___';
+  const errorMessage = 'message';
+  const formatter = jest.fn(msg => messageDecoration + msg);
+
+  const Sentry = getMockSentry();
+  const Transport = new SentryTransport({ Sentry, formatter });
+
+  Transport.log('error', errorMessage, null, () => {});
+
+  expect(formatter).toHaveBeenCalledWith('message')
+  expect(Sentry.captureMessage).toHaveBeenCalledWith('___message');
+});
