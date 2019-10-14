@@ -12,6 +12,7 @@ const getMockSentry = () => {
       cb(mockScope);
     }),
     captureMessage: jest.fn(),
+    captureException: jest.fn(),
   }
 }
 
@@ -47,4 +48,16 @@ test('message is formatted when custom formatter has been provided', () => {
 
   expect(formatter).toHaveBeenCalledWith('message')
   expect(Sentry.captureMessage).toHaveBeenCalledWith('___message');
+});
+
+test(`passes raw exceptions to Sentry's captureException`, () => {
+  const exception = new Error('Bad thing');
+
+  const Sentry = getMockSentry();
+  const Transport = new SentryTransport({ Sentry });
+
+  Transport.log('error', '', exception, () => {});
+
+  expect(Sentry.captureException).toHaveBeenCalledWith(exception)
+  expect(Sentry.captureMessage).not.toHaveBeenCalled();
 });
