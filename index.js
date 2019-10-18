@@ -28,7 +28,7 @@ module.exports = class SentryTransport extends Winston.Transport {
     this._levelsMap = options.levelsMap;
   }
 
-  log(level, msg, meta, next) {
+  log(level, message, meta, next) {
     if (this.silent) return next(null, true);
     if (!(level in this._levelsMap)) return next(null, true);
 
@@ -38,14 +38,18 @@ module.exports = class SentryTransport extends Winston.Transport {
     }
 
     if (typeof this.formatter === 'function') {
-      msg = this.formatter(msg);
+      message = this.formatter({
+        level,
+        message,
+        meta
+      });
     }
 
     this._sentry.withScope(scope => {
       const context = _.isObject(meta) ? meta : {};
       scope.setLevel(this._levelsMap[level]);
       scope.setExtra('context', context);
-      this._sentry.captureMessage(msg);
+      this._sentry.captureMessage(message);
 
       next(null, true);
     });

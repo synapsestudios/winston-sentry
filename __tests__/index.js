@@ -39,14 +39,13 @@ test('log calls sentry functions', () => {
 test('message is formatted when custom formatter has been provided', () => {
   const messageDecoration = '___';
   const errorMessage = 'message';
-  const formatter = jest.fn(msg => messageDecoration + msg);
+  const formatter = jest.fn((options) => messageDecoration + options.message);
 
   const Sentry = getMockSentry();
   const Transport = new SentryTransport({ Sentry, formatter });
 
   Transport.log('error', errorMessage, null, () => {});
 
-  expect(formatter).toHaveBeenCalledWith('message')
   expect(Sentry.captureMessage).toHaveBeenCalledWith('___message');
 });
 
