@@ -42,8 +42,8 @@ module.exports = class SentryTransport extends Transport {
     this._levelsMap = options.levelsMap;
   }
 
-  log({ level, msg, meta }, next) {
-    console.log(level, msg, meta);
+  log(info, next) {
+    console.log(info);
     if (this.silent) return next(null, true);
     if (!(level in this._levelsMap)) return next(null, true);
 
