@@ -43,18 +43,17 @@ module.exports = class SentryTransport extends Transport {
   }
 
   log({ level, message, ...meta }, next) {
-    console.log(level, message, meta);
     if (this.silent) return next(null, true);
     if (!(level in this._levelsMap)) return next(null, true);
 
-    // const message = normalizeMessage(message, meta);
-    // const context = _.isObject(meta) ? meta : {};
+    const message = normalizeMessage(message, meta);
+    const context = _.isObject(meta) ? meta : {};
 
-    // this._sentry.withScope(scope => {
-    //   scope.setLevel(this._levelsMap[level]);
-    //   scope.setExtra('context', context);
-    //   this._sentry.captureMessage(message);
-    //   next(null, true);
-    // });
+    this._sentry.withScope(scope => {
+      scope.setLevel(this._levelsMap[level]);
+      scope.setExtra('context', context);
+      this._sentry.captureMessage(message);
+      next(null, true);
+    });
   }
 }
