@@ -1,5 +1,5 @@
 const _ = require('lodash');
-const Winston = require('winston');
+const Transport = require('winston-transport');
 
 const normalizeMessage = (msg, meta) => {
   let message = msg;
@@ -15,7 +15,7 @@ const normalizeMessage = (msg, meta) => {
   return message;
 }
 
-module.exports = class SentryTransport extends Winston.Transport{
+module.exports = class SentryTransport extends Transport {
   constructor(options) {
     options = options || {};
     options = _.defaultsDeep(options, {
@@ -42,7 +42,7 @@ module.exports = class SentryTransport extends Winston.Transport{
     this._levelsMap = options.levelsMap;
   }
 
-  log(level, msg, meta, next) {
+  log({ level, msg, meta }, next) {
     if (this.silent) return next(null, true);
     if (!(level in this._levelsMap)) return next(null, true);
 

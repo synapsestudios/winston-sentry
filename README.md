@@ -3,7 +3,7 @@
 
 A simple winston transport that logs your errors to sentry.
 
-This transport is for winston 2.x and uses the new `@sentry/node` SDK instead of Raven.
+This transport is for winston 3.x and uses the new `@sentry/node` SDK instead of Raven.
 
 ## Installation
 
