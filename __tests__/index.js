@@ -27,7 +27,7 @@ test('log calls sentry functions', () => {
   const Transport = new SentryTransport({ Sentry });
 
   const cb = jest.fn();
-  Transport.log('error', 'message', null, cb);
+  Transport.log({ level: 'error', message: 'message' }, cb);
 
   expect(cb).toHaveBeenCalledWith(null, true);
   expect(Sentry.mockScope.setLevel).toHaveBeenCalledWith('error')
