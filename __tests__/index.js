@@ -20,6 +20,15 @@ test('instantiates', () => {
   const Transport = new SentryTransport({ Sentry });
 
   expect(Transport._sentry).toBe(Sentry);
+  expect(Transport._close).toBe(undefined);
+});
+
+test('instantiates with close', () => {
+  const Sentry = getMockSentry();
+  const Transport = new SentryTransport({ Sentry, close: true });
+
+  expect(Transport._sentry).toBe(Sentry);
+  expect(Transport._close).toBe(true);
 });
 
 test('log calls sentry functions', () => {
