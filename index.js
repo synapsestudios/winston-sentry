@@ -40,6 +40,7 @@ module.exports = class SentryTransport extends Transport {
     this._sentry = options.Sentry;
     this._silent = options.silent;
     this._levelsMap = options.levelsMap;
+    this._close = options.close;
   }
 
   log({ level, message, ...meta }, next) {
@@ -53,7 +54,11 @@ module.exports = class SentryTransport extends Transport {
       scope.setLevel(this._levelsMap[level]);
       scope.setExtra('context', context);
       this._sentry.captureMessage(msg);
-      next(null, true);
+      if (this._close) {
+        this._sentry.close().then(() => next(null, true));
+      } else {
+        next(null, true);
+      }
     });
   }
 }
